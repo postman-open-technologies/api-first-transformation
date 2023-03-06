@@ -1,0 +1,152 @@
+openapi: '3.1.0'
+info:
+  version: '1.0.0'
+  title: 'Messages API'
+  description: "This is our stand alone messaging API."
+servers:
+  - url: https://dcfa18db-f8d9-4e48-8fad-3f4dfcc7386e.mock.pstmn.io
+paths:
+  /v1/messages:
+    post:
+      summary: Add a message
+      requestBody:
+        $ref: '#/components/schemas/Message'
+      responses:
+        '201':
+          description: Successful add of message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+        500:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'  
+    get:
+      summary: Retrieve messages
+      parameters:
+        - name: q
+          description: Query to filter the messages
+          in: query
+          required: true
+          schema:
+            type: 'string'
+        - name: limit
+          description: Limit the records returned.
+          in: query
+          required: true
+          schema:
+            type: 'string'  
+        - name: page
+          description: Which page is being returned.
+          in: query
+          required: true
+          schema:
+            type: 'string'                       
+      responses:
+        '200':
+          description: Successful add of message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Messages'
+        500:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'                  
+  /v1/messages/{messageId}:
+    parameters:
+      - name: messageId
+        description: The unique identifier of the message
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/MessageId'
+    get:
+      summary: Read a message
+      responses:
+        '200':
+          description: Successful return of single message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+        500:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Read a message
+      requestBody:
+        $ref: '#/components/schemas/Message'      
+      responses:
+        '204':
+          description: The message corresponding to the provided `messageId`
+        500:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Deletes a message
+      responses:
+        '200':
+          description: Successful deletion of message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+        500:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'                                
+components:
+  schemas:
+    MessageId:
+      description: The unique identifier of a message
+      type: string
+    Messages:
+      type: array
+      items:
+        $ref: '#/components/schemas/Message'      
+    Message:
+      type: object
+      required:
+        - id
+        - name
+        - type
+      properties:
+        id:
+          $ref: '#/components/schemas/MessageId'
+        to:
+          type: string
+        from:
+          type: string
+        subject:
+          type: string
+        body:
+          type: string                    
+    Error:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          description: A human readable error message
+          type: string
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: X-Api-Key
+security:
+  - ApiKey: []

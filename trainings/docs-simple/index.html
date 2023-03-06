@@ -1,0 +1,151 @@
+---
+layout: default
+title: Home
+---
+
+{% assign api = site.data.messages %}
+{% assign openapi = site.data.messages | jsonify %}
+
+ <div>
+    <section>
+       <div class="container">
+        <br>      
+        <h2>{{ api.info.title }} Reference Documentation</h2>
+        <p>{{ api.info.description }}</p> 
+        <h2>Paths</h2>
+        {% for path in api.paths %}
+          <h3 style="background-color:lightgray; padding: 10px; font-size: 18px;">URL: {{ api.servers[0].url }}{{ path[0] }}</h3>
+            {% for method in path[1] %}
+
+                {% if method[0] == 'get' %}
+                    {% assign method_color = "#228B22" %}
+                {% elsif method[0] == 'post' %}
+                    {% assign method_color = "#FF5733" %}
+                {% elsif method[0] == 'put' %}
+                    {% assign method_color = "#FFC300" %} 
+                {% elsif method[0] == 'delete' %}
+                    {% assign method_color = "#C70039" %}                                                                                     
+                {% elsif method[0] == 'options' %}
+                    {% assign method_color = "#0006FF" %}                             
+                {% endif %}
+
+                <h4><span style="color:{{ method_color }};">{{ method[0] | upcase }}</span> {{ method[1].summary }}</h4>
+
+                {% if method[1].description %}
+                    <p>{{ method[1].description }}</p>
+                {% endif %}
+
+                {% if method[1].parameters %}
+                    <h5>Parameters</h5>
+                    <ul>
+                    {% for parameter in method[1].parameters %}
+                        <li>{{ parameter.name }} ({{ parameter.required }}){% if parameter.description %} - {{ parameter.description }}</li>{% endif %}
+                    {% endfor %}  
+                    </ul>
+                {% endif %}
+
+                {% if method[1].requestBody %}
+                    <h5>Request Body:</h5>
+                    <ul>
+                        <li><a href="#schema-{{ method[1].requestBody['$ref'] | replace: '#/components/requestBodies/','' }}">{{ method[1].requestBody['$ref'] | replace: '#/components/requestBodies/','' }}</a></li>
+                    </ul>
+                {% endif %}  
+                
+                {% if method[1].responses %}
+                    <h5>Responses:</h5>
+                    <ul>
+                    {% for response in method[1].responses %}
+                        <li>
+                            <strong>{{ response[0] }}</strong>
+
+                            {% if response[1].description %} - {{ response[1].description }}{% endif %}
+
+                            {% if response[1].headers %}
+                            <ul>
+                                <li>Headers
+                                    <ul>
+                                    {% for header in response[1].headers %}
+                                        <li>{{ header[0] }} ({{ header[1].schema.type }})</li>
+                                    {% endfor %}      
+                                    </ul>     
+                                </li>
+                            </ul>                  
+                            {% endif %}   
+
+                            {% if response[1].content %}
+                                <ul>
+                                    <li>Content
+                                        <ul>                                    
+                                            {% for content in response[1].content %}
+                                                <li>{{ content[0] }} - <a href="#schema-{{ content[1].schema['$ref'] | replace: '#/components/schemas/','' }}">{{ content[1].schema['$ref'] | replace: '#/components/schemas/','' }}</a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                </ul>
+                            {% endif %} 
+
+                        </li>                             
+                    {% endfor %}   
+                    </ul>                          
+                {% endif %}                                    
+
+            {% endfor %}  
+        {% endfor %}
+                
+        {% if requestBody[1].content %}
+          <hr />
+          <h1>Response Bodies</h1>
+          {% for requestBody in api.components.requestBodies %}
+  
+            <h2><a name="requestBody-{{ requestBody[0] }}"></a>{{ requestBody[0] }}</h2>            
+            <p><strong>Required:</strong> {{ requestBody[1].required }}</p>
+
+            {% if requestBody[1].content %}
+                <p><strong>Content:</strong></p>
+                <ul>                                
+                    {% for content in requestBody[1].content %}
+                        <li><a href="#schema-{{ content[1].schema['$ref'] | replace: '#/components/schemas/','' }}">{{ content[1].schema['$ref'] | replace: '#/components/schemas/','' }}</a> ({{ content[0] }})</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}                     
+
+          {% endfor %}
+        {% endif %}   
+        
+        <br><hr />
+        <h1>Schema</h1>
+        {% for schema in api.components.schemas %}
+
+          <h2><a name="schema-{{ schema[0] }}"></a>{{ schema[0] }}</h2>
+          <p><strong>Type:</strong> {{ schema[1].type }}</p>
+
+          {% if schema[1].items %}
+              <p><strong>Items:</strong></p>
+              <ul>
+                  <li><a href="#{{ schema[1].items['$ref'] | replace: '#/components/schemas/','' }}">{{ schema[1].items['$ref'] | replace: '#/components/schemas/','' }}</a></li>
+              </ul>
+          {% endif %}
+
+          {% if schema[1].properties %}
+              <p><strong>Properties:</strong></p>
+              <ul>
+              {% for property in schema[1].properties %}
+                  <li>{{ property[0] }} ({{ property[1].type }})</li>                        
+              {% endfor %}  
+              </ul>
+          {% endif %}
+
+          {% if schema[1].required %}
+              <p><strong>Required:</strong></p>
+              <ul>
+              {% for required in schema[1].required %}
+                  <li>{{ required }}</li>                        
+              {% endfor %}  
+              </ul>  
+          {% endif %}                  
+
+        {% endfor %}
+                        
+      </div>
+    </section>
+ </div>

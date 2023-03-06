@@ -1,0 +1,23 @@
+title: Explore
+description: Exploring the world around me.
+
+image: https://postman-toolboxes2.s3.amazonaws.com/assets/api.png
+
+url: /
+
+email: kin@postman.com
+
+github_user: kinlane
+github_repo: explore
+github_branch: main
+
+version:      1.1.1
+markdown:     kramdown
+
+token: token
+
+links_base_url: https://qvg1vlbp5j.execute-api.us-east-1.amazonaws.com/staging
+peoples_base_url: https://o45scrcjb5.execute-api.us-east-1.amazonaws.com/staging
+places_base_url: https://sm84vn8co7.execute-api.us-east-1.amazonaws.com/staging
+things_base_url: https://dqkupdnj9l.execute-api.us-east-1.amazonaws.com/staging
+tags_base_url: https://4ta4brx192.execute-api.us-east-1.amazonaws.com/staging

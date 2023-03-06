@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Presentation</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link rel="stylesheet" href="/assets/reveal/dist/reset.css">
+		<link rel="stylesheet" href="/assets/reveal/dist/reveal.css">
+		<link rel="stylesheet" href="/assets/reveal/dist/theme/white.css" id="theme">
+		<link rel="stylesheet" href="/assets/reveal/plugin/highlight/monokai.css">
+
+		<style>
+			.reveal section h2 {
+			display: inline-block;
+			font-size: 1em;
+			line-height: 1.2em;
+			vertical-align: top;
+			margin-top: 5px;
+			padding-top: 5px;
+		  }		
+		  .reveal section h3 {
+			display: inline-block;
+			font-size: 0.8em;
+			line-height: 1.2em;
+			vertical-align: top;
+		  }			  	
+			.reveal section p {
+			display: inline-block;
+			font-size: 0.6em;
+			line-height: 1.2em;
+			vertical-align: top;
+		  }
+		  .reveal section ul li {
+			display: inline-block;
+			font-size: 0.6em;
+			line-height: 1.2em;
+			vertical-align: top;
+		  }		  
+		</style>		
+	</head>
+
+	<body>
+
+		<div class="reveal">
+			<div class="slides">
+
+				{{ content }}
+
+			</div>
+		</div>
+
+		<script src="/assets/reveal/dist/reveal.js"></script>
+		<script src="/assets/reveal/plugin/zoom/zoom.js"></script>
+		<script src="/assets/reveal/plugin/notes/notes.js"></script>
+		<script src="/assets/reveal/plugin/search/search.js"></script>
+		<script src="/assets/reveal/plugin/markdown/markdown.js"></script>
+		<script src="/assets/reveal/plugin/highlight/highlight.js"></script>
+		<script>
+
+			// Also available as an ES module, see:
+			// https://revealjs.com/initialization/
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				center: true,
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ]
+			});
+
+		</script>
+
+	</body>
+</html>

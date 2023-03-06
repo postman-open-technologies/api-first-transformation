@@ -1,0 +1,57 @@
+---
+layout: default
+title: Home
+---
+
+ <div>
+    <section>
+       <div class="container">
+
+        <br>
+        <h2>Messages</h2>
+        <p>This is a messaging app that pulls messages from our API and listing them on the page, providing an application that makes a live API call to support a training.</p>
+        <script>
+
+        function pullmessages(){
+
+          url = 'https://34cb4157-baf5-499a-be93-9915c07dc30c.mock.pstmn.io/v1/messages/123';
+
+          const options = {
+              method: 'get'
+          };	
+
+          fetch(url,options)
+              .then(function(response) {
+                  if (!response.ok) {
+                      console.log('Error with Status Code: ' + response.status);
+                      return;
+                  }
+                  response.json().then(function(data) {	
+
+                    let result = '';                   
+                    result += '<p align="left"><strong>To:</strong> ' + data.to + '</p>';
+                    result += '<p align="left"><strong>From:</strong> ' + data.from + '</p>';
+                    result += '<p align="left"><strong>Subject:</strong> ' + data.subject + '</p>';
+                    result += '<p align="left"><strong>Body:</strong> ' + data.body + '</p>';
+                    result += '<p align="left"><strong>Timestamp:</strong> ' + data.timestamp + '</p>';
+                    
+                    document.getElementById('results').innerHTML = result;
+
+                  });
+              })
+              .catch(function(err) {
+                  console.log('Error: ' + err);
+          });
+
+          }          
+                    
+          pullmessages();
+
+        </script>
+        <div id="results" align="center" style="width: 90%; padding: 25px;"></div>
+        <p align="center"><a href="../"><strong>Return to Message Listing</strong></a></p>
+        <br>
+        <p>The API calls behind this page can be recorded using Postman Interceptor in the Chrome browser, automating the documentation of this API with a collection.</p>
+      </div>
+    </section>
+ </div>
